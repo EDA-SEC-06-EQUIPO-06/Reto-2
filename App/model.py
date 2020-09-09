@@ -32,12 +32,49 @@ es decir contiene los modelos con los datos en memoria
 """
 
 # -----------------------------------------------------
-# API del TAD Catalogo de Libros
+# API del TAD Catalogo de Peliculas
 # -----------------------------------------------------
 
 
 
 # Funciones para agregar informacion al catalogo
+
+def NewCatalog (datastructure='SINGLE_LINKED', cmpfunction=None):
+    """Crea una lista vacia.
+
+    Args:
+        cmpfunction: Función de comparación para los elementos de la lista
+    Returns:
+        Una nueva lista
+    Raises:
+        Exception
+    """
+    try:
+        lst = lt.newList(datastructure, cmpfunction)
+        return lst
+    except Exception as exp:
+        error.reraise (exp, 'TADList->newList: ')
+
+
+
+def addMovie(lst, element):
+    """ Agrega un elemento en la última posición de la lista.
+
+    Se adiciona un elemento en la última posición de la lista y se actualiza el apuntador a la útima posición. 
+    Se incrementa el tamaño de la lista en 1
+    
+    Args:
+        lst: La lista en la que se inserta el elemento
+        element: El elemento a insertar
+
+    Raises:
+        Exception
+    """
+    try:
+        lt.addLast (lst, element)
+    except Exception as exp:
+        error.reraise (exp, 'TADList->addLast: ')
+
 
 
 
@@ -45,6 +82,34 @@ es decir contiene los modelos con los datos en memoria
 # Funciones de consulta
 # ==============================
 
+def isEmptyCatalog (lst):
+    """ Indica si la lista está vacía
+
+    Args: 
+        lst: La lista a examinar
+
+    Raises:
+        Exception
+    """
+    try:
+        return lt.isEmpty(lst)
+    except Exception as exp:
+        error.reraise (exp, 'TADList->isEmpty: ')
+
+
+def sizeCatalog(lst):
+    """ Informa el número de elementos de la lista.
+
+    Args
+        lst: La lista a examinar
+    
+    Raises: 
+        Exception
+    """
+    try: 
+        return lst.size(lst)
+    except Exception as exp:
+        error.reraise (exp, 'TADList->size: ')
 
 
 # ==============================
