@@ -37,6 +37,13 @@ recae sobre el controlador.
 #  Inicializacion del catalogo
 # ___________________________________________________
 
+def initCatalog():
+    """
+    Llama la funcion de inicializacion del catalogo del modelo.
+    """
+    # catalog es utilizado para interactuar con el modelo
+    catalog = model.newCatalog()
+    return catalog
 
 
 
@@ -44,3 +51,15 @@ recae sobre el controlador.
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+
+def loadPeliculas(lst)
+    dialect = csv.excel()
+    dialect.delimiter=";"
+    try:
+        with open(cf.data_dir + file, encoding="utf-8") as csvfile:
+            row = csv.DictReader(csvfile, dialect=dialect)
+            for elemento in row: 
+                model.addMovie(lst,elemento)
+    except:
+        print("Hubo un error con la carga del archivo")
+    return lst 
