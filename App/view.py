@@ -53,3 +53,19 @@ operación seleccionada.
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
+def printMenu():
+    print("Bienvenido")
+    print("1- carga de archivos")
+
+while True:
+    printMenu()
+    inputs = input('Seleccione una opción para continuar\n')
+
+    if int(inputs[0]) == 1:
+        print("Inicializando Catálogo ....")
+        # cont es el controlador que se usará de acá en adelante
+        cont = controller.initCatalog()
+
+    else:
+        sys.exit(0)
+sys.exit(0)
