@@ -1,3 +1,11 @@
+Integrantes grupo 6:
+
+• Sebastian Heredia Vargas | s.herediav@uniandes.edu.co | 202012346
+
+• Andres Felipe Mendoza Silva | af.mendoza@uniandes.edu.co | 202012676
+
+• Felix Samuel Rojas Casadiego | fs.rojas@uniandes.edu.co | 202013414
+
 #ISIS1225 - Estructura de un proyecto
 
 Este proyecto busca mostrar una posible forma de organizar el código que se va a desarrollar en los proyectos del curso.
