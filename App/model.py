@@ -39,7 +39,7 @@ es decir contiene los modelos con los datos en memoria
 
 # Funciones para agregar informacion al catalogo
 
-def NewCatalog (datastructure='SINGLE_LINKED', cmpfunction=None):
+def newCatalog(datastructure='ARRAY_LIST', cmpfunction=None):
     """Crea una lista vacia.
 
     Args:
@@ -110,10 +110,5 @@ def sizeCatalog(lst):
         return lst.size(lst)
     except Exception as exp:
         error.reraise (exp, 'TADList->size: ')
-
-
-# ==============================
-# Funciones de Comparacion
-# ==============================
 
 

@@ -52,13 +52,31 @@ def initCatalog():
 #  de datos en los modelos
 # ___________________________________________________
 
-def loadPeliculas(lst)
+def loadPeliculas(lst, file):
     dialect = csv.excel()
     dialect.delimiter=";"
     try:
         with open(cf.data_dir + file, encoding="utf-8") as csvfile:
             row = csv.DictReader(csvfile, dialect=dialect)
-            for elemento in row: 
+            for elemento in row:
+                ## Eliminar la información que no fue solicitada para el laboratorio
+                elemento.pop("id")
+                elemento.pop("budget")
+                elemento.pop("genres")
+                elemento.pop("imdb_id")
+                elemento.pop("original_language")
+                elemento.pop("overview")
+                elemento.pop("popularity")
+                elemento.pop("production_companies")
+                elemento.pop("production_countries")
+                elemento.pop("revenue")
+                elemento.pop("runtime")
+                elemento.pop("status")
+                elemento.pop("tagline")
+                elemento.pop("original_title")
+                elemento.pop("production_companies_number")
+                elemento.pop("spoken_languages_number")
+                elemento.pop("production_countries_number")
                 model.addMovie(lst,elemento)
     except:
         print("Hubo un error con la carga del archivo")

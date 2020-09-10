@@ -54,18 +54,33 @@ operación seleccionada.
 #  Menu principal
 # ___________________________________________________
 def printMenu():
-    print("Bienvenido")
-    print("1- carga de archivos")
+    """
+    Imprime el menu de opciones
+    """
+    print("\nBienvenido")
+    print("1- Cargar catálogo de películas")
+    print("2- Información de las películas (título, fecha de estreno, promedio de votación, número de votos e idioma)")
+    print("3- Conocer un director")
+    print("4- Conocer un actor")
+    print("5- Entender un genero")
+    print("6- Crear ranking")
+    print("7- encontrar peliculas buenas")
+    print("0- Salir")
 
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
+    if len(inputs)>0:
+       if int(inputs[0]) == 1:
+          archivo = "theMoviesdb/SmallMoviesDetailsCleaned.csv"
+          catalogo_peliculas = controller.initCatalog()
+          print("Inicializando Catálogo ....")
+          lista_p = controller.loadPeliculas(catalogo_peliculas, archivo)
+          numero_cargadas = lt.size(lista_p)
+          print("Se cargaron ",numero_cargadas," peliculas")
+       elif int(inputs[0])==2: #opcion 2
+          print("Peliculas cargadas: ", lista_p)
+          peliculas = 0 
+       elif int(inputs[0])==0: #opcion 0 salir
+          sys.exit(0)        
 
-    if int(inputs[0]) == 1:
-        print("Inicializando Catálogo ....")
-        # cont es el controlador que se usará de acá en adelante
-        cont = controller.initCatalog()
-
-    else:
-        sys.exit(0)
-sys.exit(0)
