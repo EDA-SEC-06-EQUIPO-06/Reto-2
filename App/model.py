@@ -19,6 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  """
+
 import config
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
@@ -26,89 +27,63 @@ from DISClib.DataStructures import mapentry as me
 assert config
 
 """
-En este archivo definimos los TADs que vamos a usar,
-es decir contiene los modelos con los datos en memoria
-
+  Este módulo implementa el tipo abstracto de datos
+  (TAD) Map sin orden. Se puede implementar sobre una estructura
+  de datos Hash Table, con resolución de colisiones: Linear Probing
+  o separate chaining
 """
 
-# -----------------------------------------------------
-# API del TAD Catalogo de Peliculas
-# -----------------------------------------------------
+def newCatalog():
+    catalog = {'details': None,
+               'casting': None, 
+               'compañias': None,
+                }
+    catalog['details'] = lt.newList('SINGLE_LINKED', CompareIdsMovies)
+    catalog['compañias'] = mp.newMap(329045,maptype='CHAINING',loadfactor=0.4,comparefunction=compareCompanyByName)
+    return catalog
 
 
+def addMovie(catalog, movie):
+    lt.addLast(catalog['details'], movie)
+    mp.put(catalog['details'], movie["id"], movie)
 
-# Funciones para agregar informacion al catalogo
+def newCompany(name):
+    company = {'name': "", "movies": None,  "vote_average": 0}
+    company['name'] = name
+    company['movies'] = lt.newList('SINGLE_LINKED', compareCompanyByName)
+    return company
 
-def newCatalog(datastructure='ARRAY_LIST', cmpfunction=None):
-    """Crea una lista vacia.
+def addMoviesCompany(catalog, companyname, Movie):
+    companys = catalog['compañias']
+    existcompany = mp.contains(companys, companyname)
+    if existcompany:
+        entry = mp.get(companys, companyname)
+        company = me.getValue(entry)
+    else:
+        company = newCompany(companyname)
+        mp.put(companys, companyname, company)
+    lt.addLast(company['movies'], Movie)
+    company['PromVote_average'] = company['PromVote_average']/lt.size(company['movies'])
 
-    Args:
-        cmpfunction: Función de comparación para los elementos de la lista
-    Returns:
-        Una nueva lista
-    Raises:
-        Exception
-    """
-    try:
-        lst = lt.newList(datastructure, cmpfunction)
-        return lst
-    except Exception as exp:
-        error.reraise (exp, 'TADList->newList: ')
+def getMoviesByCompany(catalog, ncomp):
+    company = mp.get(catalog['compañias'], ncomp)
+    if company:
+        return me.getValue(company)
+    return None
 
+def CompareIdsMovies(id1, id2):
+    if (id1 == id2):
+        return 0
+    elif id1 > id2:
+        return 1
+    else:
+        return -1
 
-
-def addMovie(lst, element):
-    """ Agrega un elemento en la última posición de la lista.
-
-    Se adiciona un elemento en la última posición de la lista y se actualiza el apuntador a la útima posición. 
-    Se incrementa el tamaño de la lista en 1
-    
-    Args:
-        lst: La lista en la que se inserta el elemento
-        element: El elemento a insertar
-
-    Raises:
-        Exception
-    """
-    try:
-        lt.addLast (lst, element)
-    except Exception as exp:
-        error.reraise (exp, 'TADList->addLast: ')
-
-
-
-
-# ==============================
-# Funciones de consulta
-# ==============================
-
-def isEmptyCatalog (lst):
-    """ Indica si la lista está vacía
-
-    Args: 
-        lst: La lista a examinar
-
-    Raises:
-        Exception
-    """
-    try:
-        return lt.isEmpty(lst)
-    except Exception as exp:
-        error.reraise (exp, 'TADList->isEmpty: ')
-
-
-def sizeCatalog(lst):
-    """ Informa el número de elementos de la lista.
-
-    Args
-        lst: La lista a examinar
-    
-    Raises: 
-        Exception
-    """
-    try: 
-        return lst.size(lst)
-    except Exception as exp:
-        error.reraise (exp, 'TADList->size: ')
-
-
+def compareCompanyByName(keyname, company):
+    authentry = me.getKey(company)
+    if (keyname == authentry):
+        return 0
+    elif (keyname > authentry):
+        return 1
+    else:
+        return -1
