@@ -52,24 +52,41 @@ def initCatalog():
 #  de datos en los modelos
 # ___________________________________________________
 
-def loadPeliculas(catalog, file):
-    dialect = csv.excel()
-    dialect.delimiter=";"
-    try:
-        with open( cf.data_dir + file, encoding="utf-8-sig") as csvfile:
-            row = csv.DictReader(csvfile, dialect=dialect)
-            for movie in row: 
-                model.addMovie(catalog,movie)
-    except:
-        print("Hubo un error con la carga del archivo")
-    return catalog    
+
+def loadPeliculas(lst, fileC):
+    fileC = cf.data_dir + fileC
+    input_file = csv.DictReader(open(fileC,encoding="utf-8"), delimiter=";")
+    for Movie in input_file:
+        model.addMovie(lst,Movie)
+        Companys = Movie['production_companies'].split(";")  
+        for company in Companys:
+            model.addMoviesCompany(lst, company.strip(), Movie)
+
+ 
+
+
+def loadcasting(lst, fileC):
+    fileC = cf.data_dir + fileC
+    input_file = csv.DictReader(open(fileC,encoding="utf-8"), delimiter=";")
+    for Movie in input_file:
+        model.addMovie(lst,Movie)
+        directores = Movie['director_name'].split(";")  
+        for director in directores:
+            model.addMoviesDirector(lst, director.strip(), Movie)
+
 
 def getMoviesByCompany(catalog, ncomp):
     companyinfo = model.getMoviesByCompany(catalog, ncomp)
     return companyinfo
+
+
+def getMoviesByDirector(catalog, ndirec):
+    direcinfo = model.getMoviesByDirector(catalog, ndirec)
+    return direcinfo
 
 def getPeliculasPais(pais, catalog):
     model.peliculasPais(pais,catalog)
 
 def getEntenderGenero(genero, catalog):
     model.entenderGenero(genero, catalog)
+
