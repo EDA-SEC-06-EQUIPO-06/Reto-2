@@ -69,7 +69,6 @@ while True:
           archivo = "theMoviesdb/SmallMoviesDetailsCleaned.csv"
           catalogo_peliculas = controller.initCatalog()
           print("Inicializando Catálogo ....")
-          
           map_p = controller.loadPeliculas(catalogo_peliculas, archivo)
           print(map_p)
           numero_cargadas = mp.size(map_p)

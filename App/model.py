@@ -96,8 +96,6 @@ def peliculasPais(pais, catalog):
             Catálogo de películas    
     """   
     asociadas = [] 
-    total = 0
-    votos = 0
     for pelicula in catalog["elements"]:
         country = catalog["production_countries"]
         if pais.lower() in country.lower():
