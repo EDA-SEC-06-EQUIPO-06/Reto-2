@@ -36,16 +36,24 @@ operación seleccionada.
 
 def printCompanyData(comp):
     if comp:
-        print('Compañia encontrada: ' + comp['production_companies'])
-        print('Promedio: ' + str(comp['PromVote_average']))
+        print('Compañia encontrada: ' + comp['name'])
+        print('Promedio: ' + str(comp['vote_average']))
         print('Total de peliculas: ' + str(lt.size(comp['movies'])))
-        iterator = it.newIterator(comp['movies'])
-        while it.hasNext(iterator):
-            movie = it.next(iterator)
-            print('Titulo: ' + movie['title'])
+        print('Peliculas: ' + comp['movies'])
     else:
         print('No se encontro la compañia')
 
+
+
+
+def printDirectorData(direc):
+    if direc:
+        print('Director: ' + direc['name'])
+        print('Promedio: ' + str(direc['vote_average']))
+        print('Total de peliculas: ' + str(lt.size(direc['movies'])))
+        print('Peliculas: ' + direc['movies'])
+    else:
+        print('No se encontro el director')
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
@@ -56,23 +64,29 @@ def printMenu():
     print("\nBienvenido")
     print("1- Cargar catálogo de películas")
     print("2- Informacion de compañia")
+    print("3- Informacion de director")
     print("0- Salir")
 
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if len(inputs)>0:
-       if int(inputs[0]) == 1:
-          archivo = "theMoviesdb/SmallMoviesDetailsCleaned.csv"
-          catalogo_peliculas = controller.initCatalog()
-          print("Inicializando Catálogo ....")
-          
-          lista_p = controller.loadPeliculas(catalogo_peliculas, archivo)
-          numero_cargadas = lt.size(lista_p)
-          print("Se cargaron ",numero_cargadas," peliculas")
-       elif int(inputs[0])==2: #opcion 2
-          ncomp = input(print("Nombre de la compañia a buscar:\n"))
-          Comp = controller.getMoviesByCompany(catalogo_peliculas, ncomp)
-          printCompanyData(Comp)
-       elif int(inputs[0])==0: #opcion 0 salir
+         if int(inputs[0]) == 1:
+            archivo = "theMoviesdb/AllMoviesDetailsCleaned.csv"
+            archivo2 = "theMoviesdb/AllMoviesCastingRaw.csv"
+            catalogo_peliculas = controller.initCatalog()
+            print("Inicializando Catálogo ....")
+            lista_p = controller.loadPeliculas(catalogo_peliculas, archivo)
+            casting = controller.loadPeliculas(catalogo_peliculas, archivo2)
+            numero_cargadas = lt.size(lista_p)
+            print("Se cargaron ",numero_cargadas," peliculas")
+        elif int(inputs[0])==2: #opcion 2
+            ncomp = input(print("Nombre de la compañia a buscar:\n"))
+            Comp = controller.getMoviesByCompany(catalogo_peliculas, ncomp)
+            printCompanyData(Comp)
+        elif int(inputs[0])==3: #opcion 3
+            ndirector = input(print("Nombre del director a buscar:\n"))
+            direc = controller.getMoviesByDirector(catalogo_peliculas, ndirector)
+            printDirectorData(direc)
+        elif int(inputs[0])==0: #opcion 0 salir
           sys.exit(0)

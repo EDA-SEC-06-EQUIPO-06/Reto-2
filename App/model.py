@@ -37,9 +37,12 @@ def newCatalog():
     catalog = {'details': None,
                'casting': None, 
                'compañias': None,
+               'directores':None,
                 }
     catalog['details'] = lt.newList('SINGLE_LINKED', CompareIdsMovies)
-    catalog['compañias'] = mp.newMap(329045,maptype='CHAINING',loadfactor=0.4,comparefunction=compareCompanyByName)
+    catalog['casting'] = lt.newList('SINGLE_LINKED', CompareIdsMoviesC)
+    catalog['compañias'] = mp.newMap(1000,maptype='CHAINING',loadfactor=0.7,comparefunction=compareCompanyByName)
+    catalog['directores'] = mp.newMap(1000,maptype='CHAINING',loadfactor=0.7,comparefunction=compareDirectorByName)
     return catalog
 
 
@@ -47,11 +50,21 @@ def addMovie(catalog, movie):
     lt.addLast(catalog['details'], movie)
     mp.put(catalog['details'], movie["id"], movie)
 
+def addCasting(catalog, movie):
+    lt.addLast(catalog['casting'], movie)
+    mp.put(catalog['casting'], movie["id"], movie)
+
 def newCompany(name):
     company = {'name': "", "movies": None,  "vote_average": 0}
     company['name'] = name
     company['movies'] = lt.newList('SINGLE_LINKED', compareCompanyByName)
     return company
+
+def newDirector(name):
+    diretor = {'name': "", "movies": None,  "vote_average": 0}
+    director['name'] = name
+    director['movies'] = lt.newList('SINGLE_LINKED', compareDirectorByName)
+    return director
 
 def addMoviesCompany(catalog, companyname, Movie):
     companys = catalog['compañias']
@@ -63,12 +76,30 @@ def addMoviesCompany(catalog, companyname, Movie):
         company = newCompany(companyname)
         mp.put(companys, companyname, company)
     lt.addLast(company['movies'], Movie)
-    company['PromVote_average'] = company['PromVote_average']/lt.size(company['movies'])
+    company['vote_average'] = company['vote_average']/2
+
+def addMoviesDirector(catalog, directorname, Movie):
+    directores = catalog['directores']
+    existdirector = mp.contains(directores, directorname)
+    if existdirector:
+        entry = mp.get(directores, directorname)
+        director = me.getValue(entry)
+    else:
+        director = newDirector(directorname)
+        mp.put(directores, directorname, director)
+    lt.addLast(director['movies'], Movie)
+    director['vote_average'] = director['vote_average']/2
 
 def getMoviesByCompany(catalog, ncomp):
     company = mp.get(catalog['compañias'], ncomp)
     if company:
         return me.getValue(company)
+    return None
+
+def getMoviesByDirector(catalog, ndirec):
+    director = mp.get(catalog['directores'], ndirec)
+    if director:
+        return me.getValue(director)
     return None
 
 def CompareIdsMovies(id1, id2):
@@ -79,8 +110,25 @@ def CompareIdsMovies(id1, id2):
     else:
         return -1
 
+def CompareIdsMoviesC(id1, id2):
+    if (id1 == id2):
+        return 0
+    elif id1 > id2:
+        return 1
+    else:
+        return -1
+
 def compareCompanyByName(keyname, company):
     authentry = me.getKey(company)
+    if (keyname == authentry):
+        return 0
+    elif (keyname > authentry):
+        return 1
+    else:
+        return -1
+
+def compareDirectorByName(keyname, director):
+    authentry = me.getKey(director)
     if (keyname == authentry):
         return 0
     elif (keyname > authentry):
