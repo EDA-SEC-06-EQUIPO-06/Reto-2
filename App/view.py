@@ -67,6 +67,7 @@ def printMenu():
     print("3- Informacion de director")
     print("0- Salir")
 
+
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
