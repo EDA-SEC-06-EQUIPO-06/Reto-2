@@ -79,12 +79,31 @@ def entenderGenero(genero, catalog):
     for pelicula in catalog["elements"]:
         genre = catalog["genres"]
         if genero.lower() in genre.lower():
-           asociadas.append(pelicula[""])
+           asociadas.append(pelicula["original_title"])
            total += 1
            votos += int(pelicula["vote_count"])
     prom_votos = votos / total       
     res = asociadas, total, prom_votos
     return res
+
+def peliculasPais(pais, catalog):
+    """
+    Retorna la lista, el título, el año de producción y el nombre del director de las películas de un país
+     Args:
+        genero
+            Género cinematográfico
+        catalog
+            Catálogo de películas    
+    """   
+    asociadas = [] 
+    total = 0
+    votos = 0
+    for pelicula in catalog["elements"]:
+        country = catalog["production_countries"]
+        if pais.lower() in country.lower():
+           info = {"Titulo": pelicula["original_title"],"Año de producción": pelicula["release_date"], "Director":pelicula["director_name"]}  
+           asociadas.append(info)
+    return asociadas  
 
 def CompareIdsMovies(id1, id2):
     if (id1 == id2):

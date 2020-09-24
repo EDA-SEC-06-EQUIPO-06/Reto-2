@@ -57,6 +57,8 @@ def printMenu():
     print("\nBienvenido")
     print("1- Cargar catálogo de películas")
     print("2- Informacion de compañia")
+    print("3- Entender género cinematográfico") 
+    print("4- Encontrar películas por país")       
     print("0- Salir")
 
 while True:
@@ -76,7 +78,7 @@ while True:
           ncomp = input(print("Nombre de la compañia a buscar:\n"))
           Comp = controller.getMoviesByCompany(catalogo_peliculas, ncomp)
           printCompanyData(Comp)
-       elif int(inputs[0])==5: #opcion 3
+       elif int(inputs[0])==3: #opcion 3
             if catalogo_peliculas==None: 
                 print("El catálogo no existe")    
             else:
@@ -87,7 +89,14 @@ while True:
                 votos = res_genero[2]
                 print("Lista de peliculas:",lista_genero,"\n")
                 print("Numero de peliculas:",numero,"\n") 
-                print("Promedio de votos:",votos,"\n")    
+                print("Promedio de votos:",votos,"\n") 
+       elif int(inputs[0])==4: #opcion 4
+            if catalogo_peliculas==None: 
+                print("El catálogo no existe")    
+            else:        
+                pais = input("Escriba el país de intéres: ")
+                producidas_pais = controller.getPeliculasPais(pais, map_p)
+                print(producidas_pais)       
                 pass   
        elif int(inputs[0])==0: #opcion 0 salir
           sys.exit(0)

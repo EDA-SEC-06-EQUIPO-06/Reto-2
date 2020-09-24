@@ -68,5 +68,8 @@ def getMoviesByCompany(catalog, ncomp):
     companyinfo = model.getMoviesByCompany(catalog, ncomp)
     return companyinfo
 
+def getPeliculasPais(pais, catalog):
+    model.peliculasPais(pais,catalog)
+
 def getEntenderGenero(genero, catalog):
     model.entenderGenero(genero, catalog)
