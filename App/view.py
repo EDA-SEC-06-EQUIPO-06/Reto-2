@@ -23,6 +23,7 @@
 import sys
 import config
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 from DISClib.DataStructures import listiterator as it
 from App import controller
 assert config
@@ -64,7 +65,12 @@ def printMenu():
     print("\nBienvenido")
     print("1- Cargar catálogo de películas")
     print("2- Informacion de compañia")
+
     print("3- Informacion de director")
+
+    print("4- Entender género cinematográfico") 
+    print("5- Encontrar películas por país")       
+
     print("0- Salir")
 
 
@@ -72,6 +78,7 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if len(inputs)>0:
+
          if int(inputs[0]) == 1:
             archivo = "theMoviesdb/AllMoviesDetailsCleaned.csv"
             archivo2 = "theMoviesdb/AllMoviesCastingRaw.csv"
@@ -85,9 +92,31 @@ while True:
             ncomp = input(print("Nombre de la compañia a buscar:\n"))
             Comp = controller.getMoviesByCompany(catalogo_peliculas, ncomp)
             printCompanyData(Comp)
-        elif int(inputs[0])==3: #opcion 3
+
+       elif int(inputs[0])==3: #opcion 3
             ndirector = input(print("Nombre del director a buscar:\n"))
             direc = controller.getMoviesByDirector(catalogo_peliculas, ndirector)
             printDirectorData(direc)
-        elif int(inputs[0])==0: #opcion 0 salir
+       elif int(inputs[0])==3: #opcion 4
+            if catalogo_peliculas==None: 
+                print("El catálogo no existe")    
+            else:
+                genero = input("Escriba el género cinematográfico: ")
+                res_genero = controller.getEntenderGenero(genero, map_p)
+                lista_genero = res_genero[0]
+                numero = res_genero[1]
+                votos = res_genero[2]
+                print("Lista de peliculas:",lista_genero,"\n")
+                print("Numero de peliculas:",numero,"\n") 
+                print("Promedio de votos:",votos,"\n") 
+       elif int(inputs[0])==4: #opcion 5
+            if catalogo_peliculas==None: 
+                print("El catálogo no existe")    
+            else:        
+                pais = input("Escriba el país de intéres: ")
+                producidas_pais = controller.getPeliculasPais(pais, map_p)
+                print(producidas_pais)       
+                pass   
+       elif int(inputs[0])==0: #opcion 0 salir
+
           sys.exit(0)

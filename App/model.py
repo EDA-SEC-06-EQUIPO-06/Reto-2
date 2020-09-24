@@ -34,6 +34,7 @@ assert config
 """
 
 def newCatalog():
+
     catalog = {'details': None,
                'casting': None, 
                'compañias': None,
@@ -43,11 +44,13 @@ def newCatalog():
     catalog['casting'] = lt.newList('SINGLE_LINKED', CompareIdsMoviesC)
     catalog['compañias'] = mp.newMap(1000,maptype='CHAINING',loadfactor=0.7,comparefunction=compareCompanyByName)
     catalog['directores'] = mp.newMap(1000,maptype='CHAINING',loadfactor=0.7,comparefunction=compareDirectorByName)
+
+    catalog = mp.newMap(329045,maptype='CHAINING',loadfactor=0.4,comparefunction=compareCompanyByName)
+
     return catalog
 
 
 def addMovie(catalog, movie):
-    lt.addLast(catalog['details'], movie)
     mp.put(catalog['details'], movie["id"], movie)
 
 def addCasting(catalog, movie):
@@ -57,7 +60,6 @@ def addCasting(catalog, movie):
 def newCompany(name):
     company = {'name': "", "movies": None,  "vote_average": 0}
     company['name'] = name
-    company['movies'] = lt.newList('SINGLE_LINKED', compareCompanyByName)
     return company
 
 def newDirector(name):
@@ -101,6 +103,46 @@ def getMoviesByDirector(catalog, ndirec):
     if director:
         return me.getValue(director)
     return None
+
+def entenderGenero(genero, catalog):
+    """
+    Retorna la lista, el número y el promedio de votos de las películas de un género cinematográfico
+     Args:
+        genero
+            Género cinematográfico
+        catalog
+            Catálogo de películas    
+    """   
+    asociadas = [] 
+    total = 0
+    votos = 0
+    for pelicula in catalog["elements"]:
+        genre = catalog["genres"]
+        if genero.lower() in genre.lower():
+           asociadas.append(pelicula["original_title"])
+           total += 1
+           votos += int(pelicula["vote_count"])
+    prom_votos = votos / total       
+    res = asociadas, total, prom_votos
+    return res
+
+def peliculasPais(pais, catalog):
+    """
+    Retorna la lista, el título, el año de producción y el nombre del director de las películas de un país
+     Args:
+        genero
+            Género cinematográfico
+        catalog
+            Catálogo de películas    
+    """   
+    asociadas = [] 
+    for pelicula in catalog["elements"]:
+        country = catalog["production_countries"]
+        if pais.lower() in country.lower():
+           info = {"Titulo": pelicula["original_title"],"Año de producción": pelicula["release_date"], "Director":pelicula["director_name"]}  
+           asociadas.append(info)
+    return asociadas  
+
 
 def CompareIdsMovies(id1, id2):
     if (id1 == id2):
