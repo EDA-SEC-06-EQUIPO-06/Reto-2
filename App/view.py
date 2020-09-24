@@ -23,6 +23,7 @@
 import sys
 import config
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 from DISClib.DataStructures import listiterator as it
 from App import controller
 assert config
@@ -67,12 +68,26 @@ while True:
           catalogo_peliculas = controller.initCatalog()
           print("Inicializando Catálogo ....")
           
-          lista_p = controller.loadPeliculas(catalogo_peliculas, archivo)
-          numero_cargadas = lt.size(lista_p)
+          map_p = controller.loadPeliculas(catalogo_peliculas, archivo)
+          print(map_p)
+          numero_cargadas = mp.size(map_p)
           print("Se cargaron ",numero_cargadas," peliculas")
        elif int(inputs[0])==2: #opcion 2
           ncomp = input(print("Nombre de la compañia a buscar:\n"))
           Comp = controller.getMoviesByCompany(catalogo_peliculas, ncomp)
           printCompanyData(Comp)
+       elif int(inputs[0])==5: #opcion 3
+            if catalogo_peliculas==None: 
+                print("El catálogo no existe")    
+            else:
+                genero = input("Escriba el género cinematográfico: ")
+                res_genero = controller.getEntenderGenero(genero, map_p)
+                lista_genero = res_genero[0]
+                numero = res_genero[1]
+                votos = res_genero[2]
+                print("Lista de peliculas:",lista_genero,"\n")
+                print("Numero de peliculas:",numero,"\n") 
+                print("Promedio de votos:",votos,"\n")    
+                pass   
        elif int(inputs[0])==0: #opcion 0 salir
           sys.exit(0)

@@ -34,23 +34,16 @@ assert config
 """
 
 def newCatalog():
-    catalog = {'details': None,
-               'casting': None, 
-               'compañias': None,
-                }
-    catalog['details'] = lt.newList('SINGLE_LINKED', CompareIdsMovies)
-    catalog['compañias'] = mp.newMap(329045,maptype='CHAINING',loadfactor=0.4,comparefunction=compareCompanyByName)
+    catalog = mp.newMap(329045,maptype='CHAINING',loadfactor=0.4,comparefunction=compareCompanyByName)
     return catalog
 
 
 def addMovie(catalog, movie):
-    lt.addLast(catalog['details'], movie)
     mp.put(catalog['details'], movie["id"], movie)
 
 def newCompany(name):
     company = {'name': "", "movies": None,  "vote_average": 0}
     company['name'] = name
-    company['movies'] = lt.newList('SINGLE_LINKED', compareCompanyByName)
     return company
 
 def addMoviesCompany(catalog, companyname, Movie):
@@ -70,6 +63,28 @@ def getMoviesByCompany(catalog, ncomp):
     if company:
         return me.getValue(company)
     return None
+
+def entenderGenero(genero, catalog):
+    """
+    Retorna la lista, el número y el promedio de votos de las películas de un género cinematográfico
+     Args:
+        genero
+            Género cinematográfico
+        catalog
+            Catálogo de películas    
+    """   
+    asociadas = [] 
+    total = 0
+    votos = 0
+    for pelicula in catalog["elements"]:
+        genre = catalog["genres"]
+        if genero.lower() in genre.lower():
+           asociadas.append(pelicula[""])
+           total += 1
+           votos += int(pelicula["vote_count"])
+    prom_votos = votos / total       
+    res = asociadas, total, prom_votos
+    return res
 
 def CompareIdsMovies(id1, id2):
     if (id1 == id2):
